@@ -8,7 +8,6 @@ stages:
     pool: Default
     environment:
       name: EnvironmentCanary
-      resourceType: VirtualMachine
     strategy:
       canary:
         increments: [25, 50]
