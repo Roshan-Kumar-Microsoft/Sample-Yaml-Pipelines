@@ -10,7 +10,8 @@ stages:
       name: EnvironmentCanary
       resourceType: VirtualMachine
     strategy:
-      runOnce:
+      canary:
+        increments: [25, 50]
         preDeploy:
           steps:
             - script: echo Hello, world! This is pre-deploy
