@@ -13,7 +13,7 @@ stages:
         increments: [25, 50]
         preDeploy:
           steps:
-            - script: echo Hello, world! This is pre-deploy
+            - script: echo Hello, world! This is  pre-deploy
               displayName: 'Run a one-line script'
 
         deploy:
