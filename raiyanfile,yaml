@@ -1,0 +1,53 @@
+trigger: none 
+pr: none
+
+stages:
+- stage: PreProd
+  displayName: Pre Prod config
+  jobs:  
+  - job: PreProdConfig
+    displayName: Config update   
+    steps:    
+    - task: Powershell@2
+      inputs:
+        targetType: inline
+        script: |          
+          echo  'config updates in progress...'
+          #Write-Host $(resources.container.myACRContainer2.type)
+          #Write-Host $(resources.container.myACRContainer2.registry)
+          #Write-Host $(resources.container.myACRContainer2.repository)
+          #Write-Host $(resources.container.myACRContainer2.tag)
+          #Write-Host $(resources.container.myACRContainer2.digest)
+          #Write-Host $(resources.container.myACRContainer2.location)
+- stage: Prod
+  displayName: Production
+  dependsOn: PreProd
+  jobs:
+  - deployment: Deploy
+    displayName: Deploy      
+    #environment: 'rokenvironment.default'
+    strategy:
+      canary:
+        increments: [25, 50]
+        preDeploy:          
+          steps:
+          - checkout: self         
+       
+        deploy:
+          steps:          
+          - script: |
+              echo in deloy life cycle hook       
+              
+        postRouteTraffic:
+          pool: server
+          steps:
+            - task: Delay@1
+              inputs:
+                delayForMinutes: '2'
+        on:
+          failure:
+            steps:            
+            - script: echo deployment failed..            
+          success:
+            steps:
+            - script: echo deployment succeeded...    
