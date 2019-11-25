@@ -13,6 +13,7 @@ stages:
         increments: [25, 50]
         preDeploy:
           steps:
+            - checkout: self
             - script: echo Hello, world! This is pre-deploy
               displayName: 'Run a one-line script'
 
