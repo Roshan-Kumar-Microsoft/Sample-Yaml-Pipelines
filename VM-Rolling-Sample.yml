@@ -25,7 +25,9 @@ stages:
   jobs:
   - deployment: Deploy
     displayName: Deploy      
-    environment: 'rokenvironment.default'
+    pool: Default
+    environment:
+      name: rokenvironment.default
     strategy:
       canary:
         increments: [25, 50]
